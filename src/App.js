@@ -48,7 +48,7 @@ class App extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    const { guess, num1, num2, score } = this.state
+    const { guess, num1, num2 } = this.state
     if (guess == num1 * num2) {
       this.updateScore(`Bravo!`, 4);
       this.setState({ guess: ''});
@@ -99,7 +99,7 @@ class App extends Component {
       timeleft -= 1;
       if (timeleft < 0) {
         this.updateScore("Trop lent!", - 1);
-        timeleft = 10;
+        timeleft = this.timeAvailable();
       }
       this.setState({ timeleft });
     }, 1000)
@@ -168,7 +168,7 @@ class App extends Component {
 
   sadFace() {
     let faces = ['🤔', '😐', '😢', '😕', '😱', '😡'];
-    return faces[Math.round(Math.random() * faces.length)];
+    return faces[Math.round(Math.random() * (faces.length - 1))];
   }
 }
 
