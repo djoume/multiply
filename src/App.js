@@ -4,8 +4,9 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { score: 0, guess: '', num1: 2, num2: 2, history: [], timeleft: 10 };
+    this.state = { score: 0, guess: '', num1: 2, num2: 2, history: [], timeleft: 10, running: false };
 
+    this.onStart = this.onStart.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onGuessChange = this.onGuessChange.bind(this);
     this.generateRandom = this.generateRandom.bind(this);
@@ -13,13 +14,16 @@ class App extends Component {
   }
 
   render() {
-    const { score, guess, num1, num2, history, timeleft } = this.state
+    const { score, guess, num1, num2, history, timeleft, running } = this.state
     return (
       <div className="App">
         <div>
           <h2>Revise tes tables de multiplications!</h2>
+          { !running && score >= 100 && 
+            <div><img src="https://media2.giphy.com/media/NsBjgqR8jBy2mMptZF/giphy.gif?cid=3640f6095c7c6e2550374b456b57fa2f" /></div> }
+          { running ? <React.Fragment>
             <form onSubmit={this.onSubmit}>
-              {num1} x {num2} = 
+              {num1} x {num2} =
               <input
                 type="text"
                 value={guess}
@@ -27,6 +31,8 @@ class App extends Component {
               />
             </form>
           <h2>Ton score: {score} - Niveau {this.level()} - Temps restant: { timeleft }</h2>
+          </React.Fragment>
+          : <button onClick={this.onStart}>{"Let's Go!"}</button> }
         </div>
         <div className="App-history">
           { history.map(item => <div key={item.timestamp}><code>{item.message}</code></div>) }
@@ -35,7 +41,8 @@ class App extends Component {
     );
   }
 
-  componentDidMount() {
+  onStart() {
+    this.setState( { score: 0, guess: '', history: [], running: true });
     this.generateRandom();
     this.startTimer();
   }
@@ -81,7 +88,9 @@ class App extends Component {
     });
     this.stopTimer();
     if (new_score >= 100) {
-      history.unshift({timestamp: Date.now(), message: 'GAME OVER!!!'});
+      this.setState({
+        running: false,
+      })
     } else {
       this.startTimer();
     }
