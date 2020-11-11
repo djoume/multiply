@@ -19,8 +19,8 @@ class App extends Component {
       <div className="App">
         <div>
           <h2>Revise tes tables de multiplications!</h2>
-          { !running && score >= 100 && 
-            <div><img src="https://media2.giphy.com/media/NsBjgqR8jBy2mMptZF/giphy.gif?cid=3640f6095c7c6e2550374b456b57fa2f" /></div> }
+          { !running && score >= 0 && 
+            <div><img src={ this.celebrate() } /></div> }
           { running ? <React.Fragment>
             <form onSubmit={this.onSubmit}>
               {num1} x {num2} =
@@ -71,6 +71,21 @@ class App extends Component {
       num1: this.random(),
       num2: this.random(),
     })
+  }
+
+  celebrate() {
+    const celebrations = [
+      "https://media2.giphy.com/media/NsBjgqR8jBy2mMptZF/giphy.gif",
+      "https://media.giphy.com/media/RtdRhc7TxBxB0YAsK6/giphy.gif",
+      "https://media.giphy.com/media/S99cgkURVO62qemEKM/giphy.gif",
+      "https://media.giphy.com/media/ftGTY1fO9ARUI/giphy.gif",
+      "https://media.giphy.com/media/3oz8xRF0v9WMAUVLNK/giphy.gif",
+      "https://media.giphy.com/media/MhHXeM4SpKrpC/giphy.gif",
+      "https://media.giphy.com/media/65HR2UL6nn6XMSUoRA/giphy.gif",
+      "https://media.giphy.com/media/atQF1zaSGq8s8/giphy.gif",
+    ];
+
+    return celebrations[Math.floor(Math.random() * celebrations.length)];
   }
 
   updateScore(message, score_diff) {
